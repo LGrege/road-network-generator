@@ -1,0 +1,18 @@
+{
+  "branchProbability": 87,
+  "riverCount": 1,
+  "dimensionX": 600,
+  "dimensionY": 800,
+  "startPoints": [
+    {
+      "x": 87,
+      "y": 124
+    }
+  ],
+  "endPoints": [
+    {
+      "x": 312,
+      "y": 115
+    }
+  ]
+}
