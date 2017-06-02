@@ -122,8 +122,9 @@ public class SVGOutputWriter implements OutputWriterStrategy {
         svgGenerator.setColor(Color.white);
         svgGenerator.fillRect(0, 0, config.dimensionX, config.dimensionY);
 
-        if (ContextProvider.getBoolean(HEIGHT_MAP_ENABLED)) {
-            BufferedImage heightMap = TerrainParser.getHeightMap();
+        BufferedImage heightMap = TerrainParser.getHeightMap();
+
+        if (ContextProvider.getBoolean(HEIGHT_MAP_ENABLED) && heightMap != null) {
             svgGenerator.drawImage(heightMap, 0, 0, heightMap.getWidth(), heightMap.getHeight(), null);
         }
 

@@ -29,10 +29,6 @@ import java.util.ArrayList;
  */
 public class RoadNetworkConfiguration {
 
-    public final int branchProbability;
-
-    public final int riverCount;
-
     public final int dimensionX;
 
     public final int dimensionY;
@@ -41,9 +37,7 @@ public class RoadNetworkConfiguration {
 
     public ArrayList<Coordinate> endPoints;
 
-    public RoadNetworkConfiguration(int branchProbability, int riverCount, int dimensionX, int dimensionY, ArrayList<Coordinate> startPoints, ArrayList<Coordinate> endPoints) {
-        this.branchProbability = branchProbability;
-        this.riverCount = riverCount;
+    public RoadNetworkConfiguration(int dimensionX, int dimensionY, ArrayList<Coordinate> startPoints, ArrayList<Coordinate> endPoints) {
         this.dimensionX = dimensionX;
         this.dimensionY = dimensionY;
         this.startPoints = new ArrayList<>(startPoints);
@@ -55,13 +49,12 @@ public class RoadNetworkConfiguration {
     }
 
     public RoadNetworkConfiguration(RoadNetworkConfiguration src) {
-        this(src.branchProbability, src.riverCount, src.dimensionX, src.dimensionY, src.startPoints, src.endPoints);
+        this(src.dimensionX, src.dimensionY, src.startPoints, src.endPoints);
     }
 
     @Override
     public String toString() {
-        return "Road Network Configuration:\n" + "BP(" + branchProbability + "), " +
-                "RC(" + riverCount + "), " +
+        return "Road Network Configuration:\n" +
                 "DIM(" + dimensionX + "," + dimensionY + "), " +
                 "SP[" + startPoints.size() + "], " +
                 "EP[" + endPoints.size() + "]";

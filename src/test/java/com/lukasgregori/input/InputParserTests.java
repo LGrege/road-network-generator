@@ -24,8 +24,6 @@ public class InputParserTests {
         RoadNetworkConfiguration config = InputParser.parseInput("testInput.json");
 
         assertNotNull(config);
-        assertEquals(87, config.branchProbability);
-        assertEquals(1, config.riverCount);
         assertEquals(600, config.dimensionX);
         assertEquals(800, config.dimensionY);
 

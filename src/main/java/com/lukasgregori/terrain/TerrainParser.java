@@ -54,7 +54,7 @@ public class TerrainParser {
             String path = opt.orElseThrow(FileNotFoundException::new).getFile();
             heightMap = ImageIO.read(new File(path));
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error, heightmap file not found");
         }
     }
 
