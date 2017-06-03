@@ -23,6 +23,7 @@ import com.lukasgregori.input.RoadNetworkConfiguration;
 import com.lukasgregori.output.OutputWriterStrategy;
 import com.lukasgregori.output.SVGOutputWriter;
 import com.vividsolutions.jts.geom.Coordinate;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,12 +48,9 @@ public class EntityContainer {
 
     private EntityContainer() {
         RoadNetworkConfiguration config = ContextProvider.getNetworkConfig();
-        int highwayCount = config.startPoints.size() * config.endPoints.size();
-        highwayLatch = new CountDownLatch(highwayCount);
-
+        highwayLatch = new CountDownLatch(CollectionUtils.size(config.highways));
         allHighwaySegments = new ArrayList<>();
         allStreetSegments = new ArrayList<>();
-
         initSegmentGrid(config);
     }
 

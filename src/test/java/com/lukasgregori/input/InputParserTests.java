@@ -27,12 +27,10 @@ public class InputParserTests {
         assertEquals(600, config.dimensionX);
         assertEquals(800, config.dimensionY);
 
-        assertEquals(1, config.startPoints.size());
-        assertEquals(87, config.startPoints.get(0).x, 0.01f);
-        assertEquals(124, config.startPoints.get(0).y, 0.01f);
-
-        assertEquals(1, config.endPoints.size());
-        assertEquals(312, config.endPoints.get(0).x, 0.01f);
-        assertEquals(115, config.endPoints.get(0).y, 0.01f);
+        assertEquals(1, config.highways.size());
+        assertEquals(40, config.highways.get(0).start.x, 0.01f);
+        assertEquals(107, config.highways.get(0).start.y, 0.01f);
+        assertEquals(639, config.highways.get(0).target.x, 0.01f);
+        assertEquals(119, config.highways.get(0).target.y, 0.01f);
     }
 }

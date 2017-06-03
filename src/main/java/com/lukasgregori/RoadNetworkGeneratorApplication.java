@@ -19,8 +19,7 @@ public class RoadNetworkGeneratorApplication {
         System.out.println("Ready for work...");
 
         ApplicationContext context = new ClassPathXmlApplicationContext("roadgen-config.xml");
-        RoadNetworkConfiguration config = context.getBean(RoadNetworkConfiguration.class);
-        System.out.println(config);
+        context.getBean(RoadNetworkConfiguration.class);
 
         LTaskScheduler.getInstance().addTask(new LTask(new NTStart()));
         LTaskScheduler.getInstance().shutDown();

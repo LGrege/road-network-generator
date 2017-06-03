@@ -19,6 +19,7 @@
 package com.lukasgregori.input;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
@@ -33,15 +34,19 @@ public class RoadNetworkConfiguration {
 
     public final int dimensionY;
 
-    public ArrayList<Coordinate> startPoints;
+    public ArrayList<HighwayConfiguration> highways;
 
-    public ArrayList<Coordinate> endPoints;
+    public class HighwayConfiguration {
 
-    public RoadNetworkConfiguration(int dimensionX, int dimensionY, ArrayList<Coordinate> startPoints, ArrayList<Coordinate> endPoints) {
+        public Coordinate start;
+
+        public Coordinate target;
+    }
+
+    public RoadNetworkConfiguration(int dimensionX, int dimensionY, ArrayList<HighwayConfiguration> highways) {
         this.dimensionX = dimensionX;
         this.dimensionY = dimensionY;
-        this.startPoints = new ArrayList<>(startPoints);
-        this.endPoints = new ArrayList<>(endPoints);
+        this.highways = new ArrayList<>(highways);
     }
 
     public RoadNetworkConfiguration(String fileName) throws FileNotFoundException, UnsupportedEncodingException {
@@ -49,14 +54,13 @@ public class RoadNetworkConfiguration {
     }
 
     public RoadNetworkConfiguration(RoadNetworkConfiguration src) {
-        this(src.dimensionX, src.dimensionY, src.startPoints, src.endPoints);
+        this(src.dimensionX, src.dimensionY, src.highways);
     }
 
     @Override
     public String toString() {
         return "Road Network Configuration:\n" +
                 "DIM(" + dimensionX + "," + dimensionY + "), " +
-                "SP[" + startPoints.size() + "], " +
-                "EP[" + endPoints.size() + "]";
+                "HIGHWAYS[" + CollectionUtils.size(highways) + "]";
     }
 }

@@ -1,16 +1,16 @@
 {
   "dimensionX": 600,
   "dimensionY": 800,
-  "startPoints": [
+  "highways": [
     {
-      "x": 87,
-      "y": 124
-    }
-  ],
-  "endPoints": [
-    {
-      "x": 312,
-      "y": 115
+      "start": {
+        "x": 40,
+        "y": 107
+      },
+      "target": {
+        "x": 639,
+        "y": 119
+      }
     }
   ]
 }

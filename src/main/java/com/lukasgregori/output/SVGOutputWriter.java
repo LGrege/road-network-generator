@@ -75,8 +75,10 @@ public class SVGOutputWriter implements OutputWriterStrategy {
     @Override
     public void handleHighways(ArrayList<Segment> highwaySegments) {
         highwaySegments.forEach(segment -> drawSegment(segment, Color.red, 1.0f));
-        config.startPoints.forEach(point -> drawCoordinate(point, Color.green, 10));
-        config.endPoints.forEach(point -> drawCoordinate(point, Color.blue, 10));
+        config.highways.forEach(highway -> {
+            drawCoordinate(highway.start, Color.green, 10);
+            drawCoordinate(highway.target, Color.blue, 10);
+        });
     }
 
     @Override

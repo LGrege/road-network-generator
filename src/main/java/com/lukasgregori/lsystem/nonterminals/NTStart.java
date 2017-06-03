@@ -23,6 +23,8 @@ import com.lukasgregori.lsystem.LTask;
 import com.lukasgregori.lsystem.LTaskScheduler;
 import com.lukasgregori.terrain.TerrainParser;
 import com.lukasgregori.util.ContextProvider;
+import com.lukasgregori.util.Segment;
+import com.vividsolutions.jts.geom.Coordinate;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,10 +42,13 @@ public class NTStart implements Replaceable {
     public void replace() {
         checkDependencies();
         RoadNetworkConfiguration config = ContextProvider.getNetworkConfig();
-        config.startPoints.forEach(startPoint -> {
-            NTHighwayStart newHighwayStart = new NTHighwayStart(startPoint);
-            LTaskScheduler.getInstance().addTask(new LTask(newHighwayStart));
-        });
+        config.highways.forEach(highway -> createHighwaySegment(highway.start, highway.target));
+    }
+
+    private void createHighwaySegment(Coordinate start, Coordinate target) {
+        Segment startSegment = new Segment(start, start);
+        NTHighwaySegment highwaySegment = new NTHighwaySegment(startSegment, target);
+        LTaskScheduler.getInstance().addTask(new LTask(highwaySegment));
     }
 
     private void checkDependencies() {
