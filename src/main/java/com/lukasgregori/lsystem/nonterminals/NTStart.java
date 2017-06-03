@@ -24,6 +24,8 @@ import com.lukasgregori.lsystem.LTaskScheduler;
 import com.lukasgregori.terrain.TerrainParser;
 import com.lukasgregori.util.ContextProvider;
 import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.security.InvalidParameterException;
 
@@ -31,6 +33,8 @@ import java.security.InvalidParameterException;
  * @author Lukas Gregori
  */
 public class NTStart implements Replaceable {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(NTStart.class);
 
     @Override
     public void replace() {
@@ -46,7 +50,7 @@ public class NTStart implements Replaceable {
         try {
             Validate.notNull(TerrainParser.getHeightMap());
         } catch (NullPointerException ex) {
-            System.err.println("Invalid configuration, shutting down");
+            LOGGER.error("Invalid configuration, shutting down");
             throw new InvalidParameterException();
         }
     }

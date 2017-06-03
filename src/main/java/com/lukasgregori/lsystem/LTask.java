@@ -21,6 +21,8 @@ package com.lukasgregori.lsystem;
 import com.lukasgregori.lsystem.nonterminals.NTHighwaySegment;
 import com.lukasgregori.lsystem.nonterminals.Replaceable;
 import com.lukasgregori.util.EntityContainer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.security.InvalidParameterException;
 
@@ -28,6 +30,8 @@ import java.security.InvalidParameterException;
  * @author Lukas Gregori
  */
 public class LTask {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LTask.class);
 
     private Replaceable strategy;
 
@@ -37,10 +41,10 @@ public class LTask {
 
     void execute() {
         try {
-            System.out.println(strategy.getClass().getSimpleName() + ": Replace");
+            LOGGER.debug(strategy.getClass().getSimpleName() + ": Replace");
             strategy.replace();
         } catch (InvalidParameterException ex) {
-            System.out.println(strategy.getClass().getSimpleName() + ": End of canvas");
+            LOGGER.debug(strategy.getClass().getSimpleName() + ": End of canvas");
             if (strategy instanceof NTHighwaySegment) {
                 EntityContainer.getInstance().highwayLatch.countDown();
             }
