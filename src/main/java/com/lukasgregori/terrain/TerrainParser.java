@@ -22,6 +22,8 @@ import com.lukasgregori.input.RoadNetworkConfiguration;
 import com.lukasgregori.util.ContextProvider;
 import com.lukasgregori.util.Segment;
 import com.vividsolutions.jts.geom.Coordinate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -39,6 +41,8 @@ import java.util.stream.IntStream;
  */
 public class TerrainParser {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TerrainParser.class);
+
     private static RoadNetworkConfiguration config = ContextProvider.getNetworkConfig();
 
     private static int terrainAngle = ContextProvider.getInt("terrain.rays.angle");
@@ -54,7 +58,7 @@ public class TerrainParser {
             String path = opt.orElseThrow(FileNotFoundException::new).getFile();
             heightMap = ImageIO.read(new File(path));
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Error, heightmap file not found");
         }
     }
 
