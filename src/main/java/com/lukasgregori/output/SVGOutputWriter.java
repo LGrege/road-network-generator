@@ -38,6 +38,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 /**
@@ -49,11 +50,11 @@ public class SVGOutputWriter implements OutputWriterStrategy {
 
     private static final String GRID_ENABLED = "grid.enabled";
 
+    private RoadNetworkConfiguration config;
+
     private SVGGraphics2D svgGenerator;
 
     private File file;
-
-    private RoadNetworkConfiguration config;
 
     @Override
     public void openFile(File file) {
@@ -97,22 +98,9 @@ public class SVGOutputWriter implements OutputWriterStrategy {
         svgGenerator.fill(new Ellipse2D.Double(coordinate.x - width / 2.0f, coordinate.y - width / 2.0f, width, width));
     }
 
-    private void drawGrid(int rowCount, int columnCount) {
-        svgGenerator.setColor(Color.lightGray);
-
-        double stepWidthX = (double) config.dimensionX / columnCount;
-        double stepWidthY = (double) config.dimensionY / rowCount;
-
-        IntStream.range(0, columnCount).forEach(i -> svgGenerator.draw(
-                new Line2D.Double(i * stepWidthX, 0, i * stepWidthX, config.dimensionY)));
-        IntStream.range(0, rowCount).forEach(i -> svgGenerator.draw(
-                new Line2D.Double(0, i * stepWidthY, config.dimensionX, i * stepWidthY)));
-    }
-
     private void initSVGGenerator() {
         DOMImplementation domImpl =
                 GenericDOMImplementation.getDOMImplementation();
-
         String svgNS = "http://www.w3.org/2000/svg";
         Document document = domImpl.createDocument(svgNS, "svg", null);
         svgGenerator = new SVGGraphics2D(document);
@@ -123,16 +111,33 @@ public class SVGOutputWriter implements OutputWriterStrategy {
     private void drawBackground() {
         svgGenerator.setColor(Color.white);
         svgGenerator.fillRect(0, 0, config.dimensionX, config.dimensionY);
+        handleHeightMap();
+        handleGrid();
+    }
 
-        BufferedImage heightMap = TerrainParser.getHeightMap();
-
-        if (ContextProvider.getBoolean(HEIGHT_MAP_ENABLED) && heightMap != null) {
-            svgGenerator.drawImage(heightMap, 0, 0, heightMap.getWidth(), heightMap.getHeight(), null);
+    private void handleHeightMap() {
+        if (ContextProvider.getBoolean(HEIGHT_MAP_ENABLED)) {
+            Optional<BufferedImage> heightMap = Optional.ofNullable(TerrainParser.getHeightMap());
+            heightMap.ifPresent(h -> svgGenerator.drawImage(h, 0, 0, h.getWidth(), h.getHeight(), null));
         }
+    }
 
+    private void handleGrid() {
         if (ContextProvider.getBoolean(GRID_ENABLED)) {
             drawGrid(EntityContainer.getInstance().getSegmentGrid().getRowCount(),
                     EntityContainer.getInstance().getSegmentGrid().getColumnCount());
         }
+    }
+
+    private void drawGrid(int rowCount, int columnCount) {
+        svgGenerator.setColor(Color.lightGray);
+
+        double stepWidthX = (double) config.dimensionX / columnCount;
+        double stepWidthY = (double) config.dimensionY / rowCount;
+
+        IntStream.range(0, columnCount).forEach(i -> svgGenerator.draw(
+                new Line2D.Double(i * stepWidthX, 0, i * stepWidthX, config.dimensionY)));
+        IntStream.range(0, rowCount).forEach(i -> svgGenerator.draw(
+                new Line2D.Double(0, i * stepWidthY, config.dimensionX, i * stepWidthY)));
     }
 }

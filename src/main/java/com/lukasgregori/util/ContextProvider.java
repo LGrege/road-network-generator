@@ -44,7 +44,7 @@ public class ContextProvider implements ApplicationContextAware {
         return context.getBean(RoadNetworkConfiguration.class);
     }
 
-    static String getString(String name) throws MissingResourceException {
+    public static String getString(String name) throws MissingResourceException {
         ResourceBundle bundle = ResourceBundle.getBundle("application");
         return bundle.getString(name);
     }

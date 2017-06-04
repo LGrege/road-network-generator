@@ -60,7 +60,7 @@ public class NTHighwaySegmentTests {
 
     @Test
     public void testMergeOfHighway() {
-        long highwayCount = EntityContainer.getInstance().highwayLatch.getCount();
+        long highwayCount = EntityContainer.getInstance().getRemainingHighwayCount();
         Coordinate p0 = new Coordinate(0, 0);
         Coordinate p1 = new Coordinate(10, 10);
         Coordinate target = new Coordinate(11, 11);
@@ -72,7 +72,7 @@ public class NTHighwaySegmentTests {
         ArrayList<Segment> allHighwaySegments = EntityContainer.getInstance().getAllHighwaySegments();
         Segment desiredSegment = new Segment(p1, target);
         Assert.equals(true, allHighwaySegments.stream().anyMatch(s -> s.equalsTopo(new LineSegment(desiredSegment))));
-        Assert.equals(highwayCount - 1, EntityContainer.getInstance().highwayLatch.getCount());
+        Assert.equals(highwayCount - 1, EntityContainer.getInstance().getRemainingHighwayCount());
     }
 
     private void createMergeSegment(Coordinate p0, Coordinate p1, Coordinate target) {

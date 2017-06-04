@@ -20,7 +20,7 @@ package com.lukasgregori.input;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.lukasgregori.RoadNetworkGeneratorApplication;
+import com.sun.istack.internal.Nullable;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -42,7 +42,9 @@ public class InputParser {
         return gson.fromJson(reader, RoadNetworkConfiguration.class);
     }
 
+    @Nullable
     private static InputStream getInputStream(String fileName) {
-        return RoadNetworkGeneratorApplication.class.getClassLoader().getResourceAsStream(fileName);
+        ClassLoader classLoader = InputParser.class.getClassLoader();
+        return classLoader.getResourceAsStream(fileName);
     }
 }

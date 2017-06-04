@@ -38,13 +38,13 @@ public class EntityContainer {
 
     private static EntityContainer instance;
 
-    private SegmentGrid segmentGrid;
-
     private ArrayList<Segment> allHighwaySegments;
 
     private ArrayList<Segment> allStreetSegments;
 
-    public CountDownLatch highwayLatch;
+    private CountDownLatch highwayLatch;
+
+    private SegmentGrid segmentGrid;
 
     private EntityContainer() {
         RoadNetworkConfiguration config = ContextProvider.getNetworkConfig();
@@ -56,7 +56,6 @@ public class EntityContainer {
 
     private void initSegmentGrid(RoadNetworkConfiguration config) {
         double maxLength = Double.parseDouble(ContextProvider.getString(MAX_SEGMENT_LENGTH));
-
         int rowCount = (int) (config.dimensionY / (1.5f * maxLength));
         int colCount = (int) (config.dimensionX / (1.5f * maxLength));
         segmentGrid = new SegmentGrid(rowCount, colCount);
@@ -71,20 +70,28 @@ public class EntityContainer {
 
     public synchronized void addHighwaySegment(Segment newHighwaySegment) {
         segmentGrid.addSegment(newHighwaySegment);
-        getAllHighwaySegments().add(newHighwaySegment);
+        allHighwaySegments.add(newHighwaySegment);
     }
 
     public synchronized void addStreetSegment(Segment newStreetSegment) {
         segmentGrid.addSegment(newStreetSegment);
-        getAllStreetSegments().add(newStreetSegment);
+        allStreetSegments.add(newStreetSegment);
     }
 
-    public synchronized void printRoadNetwork() {
-        OutputWriterStrategy out = new SVGOutputWriter();
-        out.openFile(new File("out.svg"));
-        out.handleHighways(getAllHighwaySegments());
-        out.handleStreets(getAllStreetSegments());
-        out.closeFile();
+    public synchronized void decreaseHighwayCount() {
+        highwayLatch.countDown();
+    }
+
+    public void waitOnHighwaysToFinish() {
+        try {
+            highwayLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public long getRemainingHighwayCount() {
+        return highwayLatch.getCount();
     }
 
     public Coordinate getClosestIntersection(Segment segment) {

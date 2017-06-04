@@ -46,7 +46,7 @@ public class NTStreetSegment implements Replaceable {
 
     @Override
     public void replace() {
-        waitOnHighwaysToFinish();
+        EntityContainer.getInstance().waitOnHighwaysToFinish();
         Coordinate closestIntersection = EntityContainer.getInstance().getClosestIntersection(segment);
 
         if (closestIntersection != null) {
@@ -85,13 +85,5 @@ public class NTStreetSegment implements Replaceable {
 
         NTStreetSegment streetSegment = new NTStreetSegment(newSegment);
         LTaskScheduler.getInstance().addTask(new LTask(streetSegment));
-    }
-
-    private void waitOnHighwaysToFinish() {
-        try {
-            EntityContainer.getInstance().highwayLatch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }

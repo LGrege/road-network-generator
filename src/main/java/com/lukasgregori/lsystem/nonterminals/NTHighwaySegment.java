@@ -48,14 +48,14 @@ public class NTHighwaySegment implements Replaceable {
     NTHighwaySegment(Segment lastSegment, Coordinate target) {
         this.lastSegment = lastSegment;
         this.target = target;
-        distance = lastSegment.p1.distance(target);
+        distance = target.distance(lastSegment.p1);
     }
 
     @Override
     public void replace() {
         if (distance < ContextProvider.getInt(SNAP_DISTANCE)) {
             mergeHighwaySegmentToTarget();
-            EntityContainer.getInstance().highwayLatch.countDown();
+            EntityContainer.getInstance().decreaseHighwayCount();
         } else {
             addNewHighwaySegment();
         }
@@ -75,7 +75,7 @@ public class NTHighwaySegment implements Replaceable {
         if (closestIntersection != null) {
             Segment terminalSegment = new Segment(newSegment.p0, closestIntersection);
             EntityContainer.getInstance().addHighwaySegment(terminalSegment);
-            EntityContainer.getInstance().highwayLatch.countDown();
+            EntityContainer.getInstance().decreaseHighwayCount();
             return;
         }
 

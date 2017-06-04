@@ -27,14 +27,16 @@ import com.vividsolutions.jts.geom.Coordinate;
 import java.awt.*;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
  * @author Lukas Gregori
  */
 public class SegmentGrid implements SegmentContainer {
+
+    private static RoadNetworkConfiguration config;
 
     private SegmentGridCell[][] grid;
 
@@ -45,11 +47,10 @@ public class SegmentGrid implements SegmentContainer {
     public SegmentGrid(int rowCount, int colCount) {
         this.rowCount = rowCount;
         this.colCount = colCount;
-
+        config = ContextProvider.getNetworkConfig();
         grid = new SegmentGridCell[rowCount][colCount];
-        IntStream.range(0, rowCount).forEach(
-                i -> IntStream.range(0, colCount).forEach(
-                        j -> grid[i][j] = new SegmentGridCell()));
+        Arrays.stream(grid).forEach(row ->
+                Arrays.fill(row, new SegmentGridCell()));
     }
 
     @Override
@@ -89,7 +90,6 @@ public class SegmentGrid implements SegmentContainer {
     }
 
     private Point getCellPosition(Coordinate coordinate) {
-        RoadNetworkConfiguration config = ContextProvider.getNetworkConfig();
         int x = (int) (coordinate.x * colCount / config.dimensionX);
         int y = (int) (coordinate.y * rowCount / config.dimensionY);
 

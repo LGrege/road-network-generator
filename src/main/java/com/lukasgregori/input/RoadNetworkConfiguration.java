@@ -49,12 +49,12 @@ public class RoadNetworkConfiguration {
         this.highways = new ArrayList<>(highways);
     }
 
-    public RoadNetworkConfiguration(String fileName) throws FileNotFoundException, UnsupportedEncodingException {
-        this(InputParser.parseInput(fileName));
-    }
-
     public RoadNetworkConfiguration(RoadNetworkConfiguration src) {
         this(src.dimensionX, src.dimensionY, src.highways);
+    }
+
+    public RoadNetworkConfiguration(String fileName) throws FileNotFoundException, UnsupportedEncodingException {
+        this(InputParser.parseInput(fileName));
     }
 
     @Override

@@ -46,7 +46,7 @@ public class LTask {
         } catch (InvalidParameterException ex) {
             LOGGER.debug(strategy.getClass().getSimpleName() + ": End of canvas");
             if (strategy instanceof NTHighwaySegment) {
-                EntityContainer.getInstance().highwayLatch.countDown();
+                EntityContainer.getInstance().decreaseHighwayCount();
             }
         } catch (Exception ex) {
             ex.printStackTrace();
