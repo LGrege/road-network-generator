@@ -19,6 +19,7 @@
 package com.lukasgregori.output;
 
 import com.lukasgregori.input.RoadNetworkConfiguration;
+import com.lukasgregori.terrain.HeightMapParser;
 import com.lukasgregori.terrain.TerrainParser;
 import com.lukasgregori.util.ContextProvider;
 import com.lukasgregori.util.EntityContainer;
@@ -117,7 +118,7 @@ public class SVGOutputWriter implements OutputWriterStrategy {
 
     private void handleHeightMap() {
         if (ContextProvider.getBoolean(HEIGHT_MAP_ENABLED)) {
-            Optional<BufferedImage> heightMap = Optional.ofNullable(TerrainParser.getHeightMap());
+            Optional<BufferedImage> heightMap = Optional.ofNullable(HeightMapParser.getHeightMap());
             heightMap.ifPresent(h -> svgGenerator.drawImage(h, 0, 0, h.getWidth(), h.getHeight(), null));
         }
     }

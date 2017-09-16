@@ -20,6 +20,7 @@ package com.lukasgregori.lsystem.nonterminals;
 
 import com.lukasgregori.lsystem.LTask;
 import com.lukasgregori.lsystem.LTaskScheduler;
+import com.lukasgregori.terrain.HeightMapParser;
 import com.lukasgregori.terrain.TerrainParser;
 import com.lukasgregori.util.ContextProvider;
 import com.lukasgregori.util.EntityContainer;
@@ -81,7 +82,7 @@ public class NTStreetSegment implements Replaceable {
         double yNew = length * Math.sin(Math.toRadians(angle)) + segment.p1.y;
 
         Segment newSegment = new Segment(segment.p1, new Coordinate(xNew, yNew));
-        newSegment = TerrainParser.adaptRouteToTerrain(newSegment);
+        newSegment = HeightMapParser.adaptRouteToTerrain(newSegment);
 
         NTStreetSegment streetSegment = new NTStreetSegment(newSegment);
         LTaskScheduler.getInstance().addTask(new LTask(streetSegment));

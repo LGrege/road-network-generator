@@ -21,6 +21,7 @@ package com.lukasgregori.lsystem.nonterminals;
 import com.lukasgregori.input.RoadNetworkConfiguration;
 import com.lukasgregori.lsystem.LTask;
 import com.lukasgregori.lsystem.LTaskScheduler;
+import com.lukasgregori.terrain.HeightMapParser;
 import com.lukasgregori.terrain.TerrainParser;
 import com.lukasgregori.util.ContextProvider;
 import com.lukasgregori.util.Segment;
@@ -53,7 +54,7 @@ public class NTStart implements Replaceable {
 
     private void checkDependencies() {
         try {
-            Validate.notNull(TerrainParser.getHeightMap());
+            Validate.notNull(HeightMapParser.getHeightMap());
         } catch (NullPointerException ex) {
             LOGGER.error("Invalid configuration, shutting down");
             throw new InvalidParameterException();

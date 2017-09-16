@@ -18,83 +18,15 @@
 
 package com.lukasgregori.terrain;
 
-import com.lukasgregori.input.RoadNetworkConfiguration;
-import com.lukasgregori.util.ContextProvider;
-import com.lukasgregori.util.Segment;
-import com.vividsolutions.jts.geom.Coordinate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Optional;
-import java.util.stream.IntStream;
 
 /**
  * @author Lukas Gregori
  */
 public class TerrainParser {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TerrainParser.class);
+    public TerrainParser(String heightMapFileName) throws FileNotFoundException {
 
-    private static RoadNetworkConfiguration config = ContextProvider.getNetworkConfig();
-
-    private static int terrainAngle = ContextProvider.getInt("terrain.rays.angle");
-
-    private static int rayCount = ContextProvider.getInt("terrain.rays.amount");
-
-    private static BufferedImage heightMap;
-
-    public TerrainParser(String fileName) throws FileNotFoundException {
-        try {
-            ClassLoader classLoader = TerrainParser.class.getClassLoader();
-            Optional<URL> opt = Optional.ofNullable(classLoader.getResource(fileName));
-            String path = opt.orElseThrow(FileNotFoundException::new).getFile();
-            heightMap = ImageIO.read(new File(path));
-        } catch (IOException e) {
-            LOGGER.error("Error, heightmap file not found");
-        }
     }
 
-    public static Segment adaptRouteToTerrain(Segment segment) {
-        try {
-            ArrayList<Segment> rays = generateRays(segment);
-            rays.sort(Comparator.comparingInt(r -> heightMap.getRGB((int) r.p1.x, (int) r.p1.y) & 0xFF));
-            return rays.get(0);
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            return segment;
-        }
-    }
-
-    private static ArrayList<Segment> generateRays(Segment startSegment) {
-        ArrayList<Segment> rays = new ArrayList<>();
-        rays.add(startSegment);
-
-        IntStream.rangeClosed(-rayCount / 2, rayCount / 2).forEach(i -> {
-            double angle = startSegment.angle() + i * terrainAngle;
-            Coordinate newEndPoint = getEndPoint(startSegment.p0, angle, startSegment.getLength());
-            Segment newSegment = new Segment(startSegment.p0, newEndPoint);
-            rays.add(newSegment);
-        });
-
-        return rays;
-    }
-
-    private static Coordinate getEndPoint(Coordinate start, double angle, double distance) {
-        double newX = start.x + Math.cos(Math.toRadians(angle)) * distance;
-        double newY = start.y + Math.sin(Math.toRadians(angle)) * distance;
-        newX = Math.max(0, Math.min(config.dimensionX, newX));
-        newY = Math.max(0, Math.min(config.dimensionY, newY));
-        return new Coordinate(newX, newY);
-    }
-
-    public static BufferedImage getHeightMap() {
-        return heightMap;
-    }
 }

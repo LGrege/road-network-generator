@@ -12,8 +12,12 @@
     <bean id="applicationContextProvider"
           class="com.lukasgregori.util.ContextProvider"/>
 
+
     <bean id="terrainParser" class="com.lukasgregori.terrain.TerrainParser">
-        <constructor-arg type="java.lang.String" value="topology.tif"/>
+        <constructor-arg type="java.lang.String" value="terrain.json"/>
     </bean>
 
+    <bean id="heightMapHelper" class="com.lukasgregori.terrain.HeightMapParser">
+        <constructor-arg type="java.lang.String" value="topology.tif"/>
+    </bean>
 </beans>

@@ -20,6 +20,7 @@ package com.lukasgregori.lsystem.nonterminals;
 
 import com.lukasgregori.lsystem.LTask;
 import com.lukasgregori.lsystem.LTaskScheduler;
+import com.lukasgregori.terrain.HeightMapParser;
 import com.lukasgregori.terrain.TerrainParser;
 import com.lukasgregori.util.ContextProvider;
 import com.lukasgregori.util.OffsetUtils;
@@ -68,7 +69,7 @@ public class NTHighwaySegment implements Replaceable {
 
     private void addNewHighwaySegment() {
         Segment newSegment = new Segment(lastSegment.p1, getNextTarget());
-        newSegment = TerrainParser.adaptRouteToTerrain(newSegment);
+        newSegment = HeightMapParser.adaptRouteToTerrain(newSegment);
 
         Coordinate closestIntersection = EntityContainer.getInstance().getClosestIntersection(newSegment);
 
