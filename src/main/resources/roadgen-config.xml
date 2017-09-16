@@ -13,7 +13,7 @@
           class="com.lukasgregori.util.ContextProvider"/>
 
     <bean id="terrainParser" class="com.lukasgregori.terrain.TerrainParser">
-        <constructor-arg type="java.lang.String" value="heightmap.png"/>
+        <constructor-arg type="java.lang.String" value="topology.tif"/>
     </bean>
 
 </beans>

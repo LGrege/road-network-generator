@@ -1,6 +1,6 @@
 {
-  "dimensionX": 800,
-  "dimensionY": 600,
+  "dimensionX": 431,
+  "dimensionY": 431,
   "highways": [
     {
       "start": {
@@ -8,7 +8,7 @@
         "y": 107
       },
       "target": {
-        "x": 639,
+        "x": 339,
         "y": 119
       }
     },
@@ -19,7 +19,7 @@
       },
       "target": {
         "x": 239,
-        "y": 519
+        "y": 319
       }
     }
   ]
